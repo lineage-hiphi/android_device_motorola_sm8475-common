@@ -330,6 +330,19 @@ on property:sys.boot_completed=1 && property:ro.vendor.zram.swapon=true
     write /proc/sys/vm/swappiness 100
     setprop sys.sysctl.swappiness 100
 
+on property:sys.boot_completed=1
+    # Enable PowerHAL hint processing
+    setprop vendor.powerhal.init 1
+
+service vendor.mmi-boot-sh /vendor/bin/init.mmi.boot.sh
+    class core
+    user root
+    oneshot
+
+# set rkp csr indicatory property
+on property:ro.vendor.mot.hw.rkp_csr_uploaded=* && property:sys.boot_completed=1
+    setprop ro.rkp.csr_uploaded ${ro.vendor.mot.hw.rkp_csr_uploaded}
+
 on property:sys.sysctl.swappiness=*
     write /proc/sys/vm/swappiness ${sys.sysctl.swappiness}
 
