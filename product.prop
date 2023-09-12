@@ -23,3 +23,5 @@ bluetooth.profile.pbap.server.enabled=true
 # Media
 media.stagefright.audio.deep=false
 
+# Motorola
+ro.mot.build.customerid=global
