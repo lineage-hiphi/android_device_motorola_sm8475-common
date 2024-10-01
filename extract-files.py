@@ -115,7 +115,37 @@ blob_fixups: blob_fixups_user_type = {
     'vendor/etc/sensors/hals.conf': blob_fixup().add_line_if_missing(
         'sensors.moto_ext.so',
     ),
-}  # fmt: skip
+    'vendor/lib64/libmotext_inf.so': blob_fixup().remove_needed('libril.so'),
+    'vendor/lib64/vendor.libdpmframework.so': blob_fixup().add_needed(
+        'libhidlbase_shim.so'
+    ),
+    'vendor/lib64/libqcodec2_core.so': blob_fixup().add_needed(
+        'libcodec2_shim.so'
+    ),
+    'vendor/lib64/sensors.moto.so': blob_fixup().add_needed('libbase_shim.so'),
+    (
+        'vendor/etc/media_codecs_waipio_v0.xml',
+        'vendor/etc/media_codecs_waipio_v1.xml',
+        'vendor/etc/media_codecs_waipio_v2.xml',
+        'vendor/etc/media_codecs_ravelin.xml',
+    ): blob_fixup().regex_replace(
+        '.*media_codecs_(google_audio|google_c2|google_telephony|google_video|vendor_audio|dolby_audio).*\n',
+        '',
+    ),
+    (
+        'vendor/etc/seccomp_policy/atfwd@2.0.policy',
+        'vendor/etc/seccomp_policy/modemManager.policy',
+        'vendor/etc/seccomp_policy/wfdhdcphalservice.policy',
+    ): blob_fixup().add_line_if_missing(
+        'gettid: 1'
+    ),
+    (
+        'vendor/lib64/libdpps.so',
+        'vendor/lib64/libsnapdragoncolor-manager.so',
+    ): blob_fixup().replace_needed(
+        'libtinyxml2.so', 'libtinyxml2-v34.so'
+    ),
+}
 
 module = ExtractUtilsModule(
     'sm8475-common',
