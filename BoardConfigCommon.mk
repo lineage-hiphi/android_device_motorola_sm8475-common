@@ -133,23 +133,17 @@ TARGET_KERNEL_EXT_MODULES += \
     motorola/drivers/moto_f_mass_storage \
     motorola/drivers/moto_f_usbnet \
     motorola/drivers/misc/mmi_sys_temp \
-    motorola/drivers/watchdogtest \
-    motorola/drivers/regulator/wl2864c \
-    motorola/drivers/regulator/wl2868c \
+    motorola/drivers/power/smart_pen_charger \
     motorola/drivers/regulator/slg5bm43670 \
     motorola/drivers/sensors \
-    motorola/drivers/misc/sx937x_multi \
+    motorola/drivers/misc/hall \
+    motorola/drivers/misc/sx937x \
     motorola/drivers/input/touchscreen/touchscreen_mmi \
     motorola/drivers/input/touchscreen/goodix_berlin_mmi \
     motorola/drivers/input/touchscreen/stmicro_mmi \
-    motorola/drivers/input/touchscreen/focaltech_touch_v3 \
     motorola/drivers/input/misc/fpc_fps_mmi \
-    motorola/drivers/input/misc/rbs_fod_mmi \
-    motorola/drivers/moto_mm \
-    motorola/drivers/moto_swap \
-    motorola/drivers/nfc/st21nfc \
-    motorola/drivers/nfc/sn2xx \
-    motorola/drivers/ese/st54x
+    motorola/drivers/input/misc/goodix_fod_mmi \
+    motorola/drivers/nfc/st21nfc
 
 # Metadata
 BOARD_USES_METADATA_PARTITION := true
