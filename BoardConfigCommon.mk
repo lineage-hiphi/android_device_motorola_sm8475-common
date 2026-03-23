@@ -1,17 +1,6 @@
 #
-# Copyright (C) 2022 The LineageOS Project
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#      http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+# SPDX-FileCopyrightText: The LineageOS Project
+# SPDX-License-Identifier: Apache-2.0
 #
 
 COMMON_PATH := device/motorola/sm8475-common
@@ -49,8 +38,6 @@ AUDIO_FEATURE_ENABLED_INSTANCE_ID := true
 AUDIO_FEATURE_ENABLED_PAL_HIDL := true
 AUDIO_FEATURE_ENABLED_PROXY_DEVICE := true
 BOARD_SUPPORTS_OPENSOURCE_STHAL := true
-BOARD_SUPPORTS_SOUND_TRIGGER := true
-BOARD_USES_ALSA_AUDIO := true
 TARGET_USES_QCOM_MM_AUDIO := true
 TARGET_PAL_SPKR_PROTECTION_PATH := /mnt/vendor/persist/factory/audio/audio.cal
 
@@ -61,6 +48,7 @@ TARGET_NO_BOOTLOADER := true
 BOARD_INCLUDE_DTB_IN_BOOTIMG := true
 BOARD_USES_QCOM_MERGE_DTBS_SCRIPT := true
 TARGET_NEEDS_DTBOIMAGE := true
+TARGET_MERGE_DTBS_WILDCARD ?= waipio*base
 
 # Filesystem
 TARGET_FS_CONFIG_GEN := $(COMMON_PATH)/config.fs
@@ -72,9 +60,7 @@ BOARD_VENDOR_QCOM_GPS_LOC_API_HARDWARE := default
 BOARD_BOOT_HEADER_VERSION := 4
 BOARD_KERNEL_BASE := 0x00000000
 BOARD_KERNEL_CMDLINE += \
-    firmware_class.path=/data/vendor/param/firmware \
-    printk.devkmsg=on \
-    sysctl.kernel.firmware_config.force_sysfs_fallback=1
+    printk.devkmsg=on
 BOARD_BOOTCONFIG += \
     androidboot.hardware=qcom \
     androidboot.memcg=1 \
@@ -88,15 +74,16 @@ TARGET_KERNEL_SOURCE := kernel/motorola/sm8475
 TARGET_KERNEL_CONFIG := \
     gki_defconfig \
     vendor/waipio_GKI.config \
-    vendor/ext_config/moto-waipio.config
+    vendor/ext_config/moto-waipio.config \
+    vendor/ext_config/moto-waipio-gki.config
 
 TARGET_KERNEL_EXT_MODULE_ROOT := kernel/motorola/sm8475-modules
 
 # Kernel Modules
 BOARD_VENDOR_KERNEL_MODULES_LOAD := $(strip $(shell cat $(COMMON_PATH)/modules.load))
-BOARD_VENDOR_KERNEL_MODULES_BLOCKLIST_FILE := $(COMMON_PATH)/modules.blocklist
+BOARD_VENDOR_KERNEL_MODULES_BLOCKLIST_FILE := $(TARGET_KERNEL_SOURCE)/modules.vendor_blocklist.msm.waipio
 BOARD_VENDOR_RAMDISK_KERNEL_MODULES_LOAD := $(strip $(shell cat $(COMMON_PATH)/modules.load.vendor_boot))
-BOARD_VENDOR_RAMDISK_KERNEL_MODULES_BLOCKLIST_FILE := $(COMMON_PATH)/modules.blocklist.vendor_boot
+BOARD_VENDOR_RAMDISK_KERNEL_MODULES_BLOCKLIST_FILE := $(BOARD_VENDOR_KERNEL_MODULES_BLOCKLIST_FILE)
 BOARD_VENDOR_RAMDISK_RECOVERY_KERNEL_MODULES_LOAD := $(strip $(shell cat $(COMMON_PATH)/modules.load.recovery))
 BOOT_KERNEL_MODULES := $(BOARD_VENDOR_RAMDISK_RECOVERY_KERNEL_MODULES_LOAD)
 
@@ -130,29 +117,28 @@ TARGET_KERNEL_EXT_MODULES += \
     motorola/drivers/power/sgm4154x_charger_lite \
     motorola/drivers/misc/utag \
     motorola/drivers/mmi_relay \
-    motorola/drivers/moto_f_mass_storage \
-    motorola/drivers/moto_f_usbnet \
     motorola/drivers/misc/mmi_sys_temp \
-    motorola/drivers/watchdogtest \
-    motorola/drivers/regulator/wl2864c \
-    motorola/drivers/regulator/wl2868c \
+    motorola/drivers/power/smart_pen_charger \
     motorola/drivers/regulator/slg5bm43670 \
     motorola/drivers/sensors \
-    motorola/drivers/misc/sx937x_multi \
+    motorola/drivers/misc/hall \
+    motorola/drivers/misc/sx937x \
     motorola/drivers/input/touchscreen/touchscreen_mmi \
     motorola/drivers/input/touchscreen/goodix_berlin_mmi \
     motorola/drivers/input/touchscreen/stmicro_mmi \
-    motorola/drivers/input/touchscreen/focaltech_touch_v3 \
     motorola/drivers/input/misc/fpc_fps_mmi \
-    motorola/drivers/input/misc/rbs_fod_mmi \
-    motorola/drivers/moto_mm \
-    motorola/drivers/moto_swap \
-    motorola/drivers/nfc/st21nfc \
-    motorola/drivers/nfc/sn2xx \
-    motorola/drivers/ese/st54x
+    motorola/drivers/input/misc/goodix_fod_mmi \
+    motorola/drivers/nfc/st21nfc
 
 # Metadata
 BOARD_USES_METADATA_PARTITION := true
+
+# Platform
+BOARD_USES_QCOM_HARDWARE := true
+TARGET_BOARD_PLATFORM := taro
+
+BOARD_ROOT_EXTRA_SYMLINKS := \
+    /vendor/fsg:/fsg
 
 # Partitions
 -include vendor/lineage/config/BoardConfigReservedSize.mk
@@ -164,8 +150,8 @@ BOARD_BUILD_VENDOR_RAMDISK_IMAGE := true
 BOARD_PRODUCTIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_SYSTEM_EXTIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_SYSTEMIMAGE_FILE_SYSTEM_TYPE := ext4
-BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := erofs
-BOARD_VENDOR_DLKMIMAGE_FILE_SYSTEM_TYPE := erofs
+BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
+BOARD_VENDOR_DLKMIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_MOT_DP_GROUP_PARTITION_LIST := product system system_ext vendor vendor_dlkm
 BOARD_SUPER_PARTITION_GROUPS := mot_dp_group
 BOARD_FLASH_BLOCK_SIZE := 262144 # (BOARD_KERNEL_PAGESIZE * 64)
@@ -173,27 +159,19 @@ TARGET_COPY_OUT_PRODUCT := product
 TARGET_COPY_OUT_SYSTEM_EXT := system_ext
 TARGET_COPY_OUT_VENDOR := vendor
 TARGET_COPY_OUT_VENDOR_DLKM := vendor_dlkm
-BOARD_EROFS_PCLUSTER_SIZE := 262144
-BOARD_EROFS_COMPRESSOR := lz4hc,12
-
-# Platform
-BOARD_USES_QCOM_HARDWARE := true
-TARGET_BOARD_PLATFORM := taro
-
-BOARD_ROOT_EXTRA_SYMLINKS := \
-    /vendor/fsg:/fsg
 
 # Properties
 TARGET_ODM_PROP += $(COMMON_PATH)/odm.prop
 TARGET_PRODUCT_PROP += $(COMMON_PATH)/product.prop
+TARGET_SYSTEM_PROP += $(COMMON_PATH)/system.prop
 TARGET_SYSTEM_EXT_PROP += $(COMMON_PATH)/system_ext.prop
 TARGET_VENDOR_PROP += $(COMMON_PATH)/vendor.prop
 
 # Recovery
 BOARD_EXCLUDE_KERNEL_FROM_RECOVERY_IMAGE := true
 TARGET_RECOVERY_PIXEL_FORMAT := RGBX_8888
+TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_USERIMAGES_USE_F2FS := true
-TARGET_RECOVERY_FSTAB := $(COMMON_PATH)/init/fstab.qcom
 
 # RIL
 ENABLE_VENDOR_RIL_SERVICE := true
@@ -207,21 +185,10 @@ PRODUCT_PUBLIC_SEPOLICY_DIRS += $(COMMON_PATH)/sepolicy/public
 
 # Verified Boot
 BOARD_AVB_ENABLE := true
-
-ifneq (,$(AVB_CUSTOM_KEY_PATH))
-BOARD_AVB_ALGORITHM := $(AVB_CUSTOM_ALGORITHM)
-BOARD_AVB_KEY_PATH := $(AVB_CUSTOM_KEY_PATH)
-else
-AVB_CUSTOM_ALGORITHM := SHA256_RSA2048
-AVB_CUSTOM_KEY_PATH := external/avb/test/data/testkey_rsa2048.pem
-endif
-
-ifneq ($(WITH_AVB),true)
 BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 3
-endif
 BOARD_AVB_VBMETA_SYSTEM := system system_ext product
-BOARD_AVB_VBMETA_SYSTEM_ALGORITHM := $(AVB_CUSTOM_ALGORITHM)
-BOARD_AVB_VBMETA_SYSTEM_KEY_PATH := $(AVB_CUSTOM_KEY_PATH)
+BOARD_AVB_VBMETA_SYSTEM_KEY_PATH := external/avb/test/data/testkey_rsa2048.pem
+BOARD_AVB_VBMETA_SYSTEM_ALGORITHM := SHA256_RSA2048
 BOARD_AVB_VBMETA_SYSTEM_ROLLBACK_INDEX := $(PLATFORM_SECURITY_PATCH_TIMESTAMP)
 BOARD_AVB_VBMETA_SYSTEM_ROLLBACK_INDEX_LOCATION := 2
 BOARD_MOVE_GSI_AVB_KEYS_TO_VENDOR_BOOT := true

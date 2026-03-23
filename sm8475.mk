@@ -1,17 +1,6 @@
 #
-# Copyright (C) 2024 The LineageOS Project
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#      http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+# SPDX-FileCopyrightText: The LineageOS Project
+# SPDX-License-Identifier: Apache-2.0
 #
 
 # Enable project quotas and casefolding for emulated storage without sdcardfs
@@ -35,12 +24,20 @@ AB_OTA_POSTINSTALL_CONFIG += \
 AB_OTA_POSTINSTALL_CONFIG += \
     RUN_POSTINSTALL_vendor=true \
     POSTINSTALL_PATH_vendor=bin/checkpoint_gc \
-    FILESYSTEM_TYPE_vendor=erofs \
+    FILESYSTEM_TYPE_vendor=ext4 \
     POSTINSTALL_OPTIONAL_vendor=true
 
 PRODUCT_PACKAGES += \
     checkpoint_gc \
     otapreopt_script
+
+# Boot control
+PRODUCT_PACKAGES += \
+    android.hardware.boot-service.qti \
+    android.hardware.boot-service.qti.recovery
+
+PRODUCT_PACKAGES_DEBUG += \
+    bootctl
 
 # Audio
 PRODUCT_PACKAGES += \
@@ -51,8 +48,8 @@ PRODUCT_PACKAGES += \
     android.hardware.soundtrigger@2.3-impl \
     audioadsprpcd \
     audio.bluetooth.default \
-    audio.r_submix.default \
     audio.primary.taro \
+    audio.r_submix.default \
     audio.usb.default \
     lib_bt_aptx \
     lib_bt_ble \
@@ -67,28 +64,29 @@ PRODUCT_PACKAGES += \
     sound_trigger.primary.taro \
     vendor.qti.hardware.AGMIPC@1.0-service
 
+AUDIO_HAL_DIR := hardware/qcom-caf/sm8450/audio/primary-hal
+
 PRODUCT_COPY_FILES += \
+    $(AUDIO_HAL_DIR)/configs/common/codec2/media_codecs_c2_audio.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_c2_audio.xml \
+    $(AUDIO_HAL_DIR)/configs/common/codec2/service/1.0/c2audio.vendor.base-arm.policy:$(TARGET_COPY_OUT_VENDOR)/etc/seccomp_policy/c2audio.vendor.base-arm.policy \
+    $(AUDIO_HAL_DIR)/configs/common/codec2/service/1.0/c2audio.vendor.base-arm64.policy:$(TARGET_COPY_OUT_VENDOR)/etc/seccomp_policy/c2audio.vendor.base-arm64.policy \
+    $(AUDIO_HAL_DIR)/configs/common/codec2/service/1.0/c2audio.vendor.ext-arm.policy:$(TARGET_COPY_OUT_VENDOR)/etc/seccomp_policy/c2audio.vendor.ext-arm.policy \
+    $(AUDIO_HAL_DIR)/configs/common/codec2/service/1.0/c2audio.vendor.ext-arm64.policy:$(TARGET_COPY_OUT_VENDOR)/etc/seccomp_policy/c2audio.vendor.ext-arm64.policy \
+    $(AUDIO_HAL_DIR)/configs/common/bluetooth_qti_audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/bluetooth_qti_audio_policy_configuration.xml \
+    $(AUDIO_HAL_DIR)/configs/common/bluetooth_qti_hearing_aid_audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/bluetooth_qti_hearing_aid_audio_policy_configuration.xml \
+    $(AUDIO_HAL_DIR)/configs/taro/card-defs.xml:$(TARGET_COPY_OUT_VENDOR)/etc/card-defs.xml \
+    $(AUDIO_HAL_DIR)/configs/taro/microphone_characteristics.xml:$(TARGET_COPY_OUT_VENDOR)/etc/microphone_characteristics.xml \
+    $(LOCAL_PATH)/configs/audio/audio_effects.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio/sku_cape/audio_effects.xml \
+    $(LOCAL_PATH)/configs/audio/audio_effects.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio/sku_taro/audio_effects.xml \
+    $(LOCAL_PATH)/configs/audio/audio_effects.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_effects.xml
+
+PRODUCT_COPY_FILES += \
+    frameworks/av/services/audiopolicy/config/audio_policy_volumes.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_policy_volumes.xml \
+    frameworks/av/services/audiopolicy/config/default_volume_tables.xml:$(TARGET_COPY_OUT_VENDOR)/etc/default_volume_tables.xml \
     frameworks/av/services/audiopolicy/config/a2dp_in_audio_policy_configuration_7_0.xml:$(TARGET_COPY_OUT_VENDOR)/etc/a2dp_in_audio_policy_configuration_7_0.xml \
     frameworks/av/services/audiopolicy/config/bluetooth_audio_policy_configuration_7_0.xml:$(TARGET_COPY_OUT_VENDOR)/etc/bluetooth_audio_policy_configuration_7_0.xml \
     frameworks/av/services/audiopolicy/config/r_submix_audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/r_submix_audio_policy_configuration.xml \
     frameworks/av/services/audiopolicy/config/usb_audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/usb_audio_policy_configuration.xml
-
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/audio/sku_cape/audio_effects.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio/sku_cape/audio_effects.xml \
-    $(LOCAL_PATH)/configs/audio/sku_cape/audio_policy_configuration_a2dp_offload_disabled.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio/sku_cape/audio_policy_configuration_a2dp_offload_disabled.xml \
-    $(LOCAL_PATH)/configs/audio/audio_effects.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_effects.xml \
-    $(LOCAL_PATH)/configs/audio/card-defs.xml:$(TARGET_COPY_OUT_VENDOR)/etc/card-defs.xml
-
-# Boot control
-PRODUCT_PACKAGES += \
-    android.hardware.boot-service.qti \
-    android.hardware.boot-service.qti.recovery
-
-PRODUCT_PACKAGES_DEBUG += \
-    bootctl
-
-# Charger
-WITH_LINEAGE_CHARGER := false
 
 # Display
 PRODUCT_PACKAGES += \
@@ -105,7 +103,8 @@ PRODUCT_PACKAGES += \
 
 # fastbootd
 PRODUCT_PACKAGES += \
-    android.hardware.fastboot@1.1-impl-mock
+    android.hardware.fastboot@1.1-impl-mock \
+    fastbootd
 
 # GPS
 PRODUCT_PACKAGES += \
@@ -123,7 +122,9 @@ PRODUCT_PACKAGES += \
     batching.conf \
     gnss_antenna_info.conf \
     gps.conf \
-    izat.conf
+    izat.conf \
+    lowi.conf \
+    sap.conf
 
 # Health
 PRODUCT_PACKAGES += \
@@ -132,8 +133,6 @@ PRODUCT_PACKAGES += \
 
 # Init
 PRODUCT_PACKAGES += \
-    fstab.qcom \
-    fstab.qcom.vendor_ramdisk \
     fstab.qcom.zram \
     init.mmi.charge_only.rc \
     init.mmi.chipset.rc \
@@ -149,7 +148,8 @@ PRODUCT_PACKAGES += \
     init.qcom.class_core.sh \
     init.qcom.early_boot.sh \
     init.qcom.post_boot.sh \
-    init.qcom.sh
+    init.qcom.sh \
+    init.qti.write.sh
 
 # IPACM
 PRODUCT_PACKAGES += \
@@ -164,7 +164,10 @@ PRODUCT_ENABLE_UFFD_GC := true
 PRODUCT_PACKAGES += \
     vendor.lineage.health-service.default
 
-$(call soong_config_set,lineage_health,charging_control_charging_path,/sys/module/qpnp_adaptive_charge/parameters/charging_enabled)
+$(call soong_config_set,lineage_health,charging_control_charging_disabled,1)
+$(call soong_config_set,lineage_health,charging_control_charging_enabled,0)
+$(call soong_config_set,lineage_health,charging_control_charging_path,/sys/class/power_supply/battery/device/force_charging_disable)
+$(call soong_config_set_bool,lineage_health,charging_control_supports_bypass,false)
 
 # LiveDisplay
 PRODUCT_PACKAGES += \
@@ -172,6 +175,7 @@ PRODUCT_PACKAGES += \
     vendor.lineage.livedisplay-service.sysfs
 
 $(call soong_config_set_bool,livedisplay_sdm,enable_dm,false)
+$(call soong_config_set_bool,livedisplay_sysfs,enable_af,true)
 $(call soong_config_set_bool,livedisplay_sysfs,enable_se,true)
 
 # MotoActions
@@ -191,9 +195,8 @@ PRODUCT_PACKAGES += \
 # Overlays
 PRODUCT_PACKAGES += \
     FrameworksResCommon \
-    LineageApertureAppCommon \
     LineageSdkCommon \
-    SettingsCommon \
+    SettingsProviderResCommon \
     SystemUIResCommon \
     TelephonyResCommon \
     WifiResCommon \
@@ -265,6 +268,10 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.sensor.stepcounter.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/sku_taro/android.hardware.sensor.stepcounter.xml \
     frameworks/native/data/etc/android.hardware.sensor.stepdetector.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/sku_taro/android.hardware.sensor.stepdetector.xml \
     frameworks/native/data/etc/handheld_core_hardware.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/handheld_core_hardware.xml
+
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/configs/permissions/android.hardware.hardware_keystore_v100.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/sku_cape/android.hardware.hardware_keystore.xml \
+    $(LOCAL_PATH)/configs/permissions/android.hardware.hardware_keystore_v100.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/sku_taro/android.hardware.hardware_keystore.xml \
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/permissions/product_privapp-permissions-hotword.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/permissions/privapp-permissions-hotword.xml
@@ -382,9 +389,7 @@ PRODUCT_PACKAGES += \
     firmware_WCNSS_qcom_cfg.ini_symlink
 
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/wifi/kiwi/WCNSS_qcom_cfg.ini:$(TARGET_COPY_OUT_VENDOR)/etc/wifi/kiwi/WCNSS_qcom_cfg.ini \
     $(LOCAL_PATH)/configs/wifi/qca6490/WCNSS_qcom_cfg.ini:$(TARGET_COPY_OUT_VENDOR)/etc/wifi/qca6490/WCNSS_qcom_cfg.ini \
-    $(LOCAL_PATH)/configs/wifi/qca6750/WCNSS_qcom_cfg.ini:$(TARGET_COPY_OUT_VENDOR)/etc/wifi/qca6750/WCNSS_qcom_cfg.ini \
     $(LOCAL_PATH)/configs/wifi/p2p_supplicant_overlay.conf:$(TARGET_COPY_OUT_VENDOR)/etc/wifi/p2p_supplicant_overlay.conf \
     $(LOCAL_PATH)/configs/wifi/wpa_supplicant_overlay.conf:$(TARGET_COPY_OUT_VENDOR)/etc/wifi/wpa_supplicant_overlay.conf
 
