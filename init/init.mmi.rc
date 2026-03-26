@@ -356,10 +356,17 @@ service vendor.oem-super-image-detector-sh /vendor/bin/init.oem.hw.sh -M
     oneshot
     disabled
 
-service fpc_ident /vendor/bin/fpc_ident
+service fpc_ident /vendor/bin/hw/fpc_ident
     class late_start
     user system
     group system
+    oneshot
+    disabled
+
+service gf_ident /vendor/bin/hw/goodix_ident
+    class late_start
+    user system
+    group system input uhid
     oneshot
     disabled
 
