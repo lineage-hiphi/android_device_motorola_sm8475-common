@@ -113,14 +113,20 @@ TARGET_KERNEL_EXT_MODULES += \
     motorola/drivers/power/mmi_charger \
     motorola/drivers/power/qti_glink_charger \
     motorola/drivers/power/qpnp_adaptive_charge \
+    motorola/drivers/power/bq27426_fg_mmi \
     motorola/drivers/power/cw2217b_fg_mmi \
     motorola/drivers/power/sgm4154x_charger_lite \
     motorola/drivers/misc/utag \
+    motorola/drivers/misc/mmi_stow \
     motorola/drivers/mmi_relay \
     motorola/drivers/misc/mmi_sys_temp \
     motorola/drivers/power/smart_pen_charger \
+    motorola/drivers/regulator/dio8015 \
     motorola/drivers/regulator/slg5bm43670 \
+    motorola/drivers/regulator/wl2864c \
+    motorola/drivers/regulator/wl2866d \
     motorola/drivers/sensors \
+    motorola/drivers/misc/awinic/sarsensor \
     motorola/drivers/misc/hall \
     motorola/drivers/misc/sx937x \
     motorola/drivers/input/touchscreen/touchscreen_mmi \
@@ -128,7 +134,10 @@ TARGET_KERNEL_EXT_MODULES += \
     motorola/drivers/input/touchscreen/stmicro_mmi \
     motorola/drivers/input/misc/fpc_fps_mmi \
     motorola/drivers/input/misc/goodix_fod_mmi \
-    motorola/drivers/nfc/st21nfc
+    motorola/drivers/moto_netopt/con_dfpar \
+    motorola/drivers/nfc/st21nfc \
+    motorola/drivers/ese/st54x \
+    motorola/drivers/wlan_antenna
 
 # Metadata
 BOARD_USES_METADATA_PARTITION := true
