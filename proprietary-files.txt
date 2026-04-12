@@ -872,7 +872,9 @@ system_ext/lib64/vendor.qti.ImsRtpService-V1-ndk.so
 system_ext/lib64/vendor.qti.ImsRtpService-V2-ndk.so
 system_ext/lib64/vendor.qti.imsrtpservice@3.0.so
 system_ext/lib64/vendor.qti.imsrtpservice@3.1.so
-system_ext/priv-app/ims/ims.apk
+
+# RIL - IMS - system_ext - from eqs - 14-U1SQS34.52-21-1-15
+system_ext/priv-app/ims/ims.apk|3530d99defa374df9504ba023a9d47335f0ef722
 
 # RIL - IMS
 vendor/bin/ims_rtp_daemon
