@@ -127,7 +127,6 @@ TARGET_KERNEL_EXT_MODULES += \
     motorola/drivers/regulator/wl2866d \
     motorola/drivers/sensors \
     motorola/drivers/misc/awinic/sarsensor \
-    motorola/drivers/misc/hall \
     motorola/drivers/misc/sx937x \
     motorola/drivers/input/touchscreen/touchscreen_mmi \
     motorola/drivers/input/touchscreen/goodix_berlin_mmi \
