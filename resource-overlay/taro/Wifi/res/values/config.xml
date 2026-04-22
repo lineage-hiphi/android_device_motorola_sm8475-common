@@ -10,6 +10,21 @@
     <!-- Boolean indicating whether 802.11r Fast BSS Transition is enabled on this platform -->
     <bool name="config_wifi_fast_bss_transition_enabled">true</bool>
 
+    <!-- Integer parameters of the wifi to cellular handover feature
+         wifi should not stick to bad networks -->
+    <!-- Integer threshold for low network score, should be somewhat less than the entry threshhold -->
+    <integer name="config_wifi_framework_wifi_score_bad_rssi_threshold_5GHz">-78</integer>
+
+    <!-- Integer threshold, do not connect to APs with RSSI lower than the entry threshold -->
+    <integer name="config_wifi_framework_wifi_score_entry_rssi_threshold_5GHz">-76</integer>
+    <integer name="config_wifi_framework_wifi_score_bad_rssi_threshold_24GHz">-78</integer>
+    <integer name="config_wifi_framework_wifi_score_entry_rssi_threshold_24GHz">-76</integer>
+
+    <!-- List of allowed channels in 6GHz band for softap. If the device doesn't want to restrict
+         channels this should be empty. Values is a comma separated channel string and/or channel
+         range string like '36-48,149'. -->
+    <string name="config_wifiSoftap6gChannelList" translatable="false">1-233</string>
+
     <!-- Wifi driver supports Automatic channel selection (ACS) for softap -->
     <bool name="config_wifi_softap_acs_supported">true</bool>
 
@@ -27,9 +42,6 @@
 
     <!-- Wifi driver supports IEEE80211AX TWT (Target Wake Time) for softap -->
     <bool name="config_wifiSoftapHeTwtSupported">true</bool>
-
-    <!-- Wifi driver supports 6GHz band for softap when chip support 6GHz -->
-    <bool name="config_wifiSoftap6ghzSupported">true</bool>
 
     <!-- Indicates that bridged AP mode is supported on this device provided that
      the device interface combination allows for it -->
@@ -49,14 +61,6 @@
     <!-- Enable Make-Before-Break Wifi network switching.
          Note: this is conditional on the device supporting dual concurrent STAs. -->
     <bool name="config_wifiMultiStaNetworkSwitchingMakeBeforeBreakEnabled">true</bool>
-
-    <!-- Enable concurrent peer to peer + internet connectivity
-         Note: this is conditional on the device supporting dual concurrent STAs. -->
-    <bool name="config_wifiMultiStaLocalOnlyConcurrencyEnabled">true</bool>
-
-    <!-- Enable concurrent restricted connectivity + internet connectivity
-         Note: this is conditional on the device supporting dual concurrent STAs. -->
-    <bool name="config_wifiMultiStaRestrictedConcurrencyEnabled">true</bool>
 
     <!-- A boolean indicate if device supports ser channel on the Aware data-path setup. If the
     value is false, channel setting on the data-path request will be ignored.
