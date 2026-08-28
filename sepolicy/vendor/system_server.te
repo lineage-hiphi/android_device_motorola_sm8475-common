@@ -1,0 +1,2 @@
+# system_server
+allow system_server system_data_root_file:file { read getattr open };
