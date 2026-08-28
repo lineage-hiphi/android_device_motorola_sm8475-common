@@ -1,0 +1,3 @@
+# vendor_init
+allow vendor_init vendor_cnd_prop:property_service set;
+

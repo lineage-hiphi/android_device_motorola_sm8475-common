@@ -1,0 +1,3 @@
+# NFC
+allow nfc proc_filesystems:file r_file_perms;
+get_prop(nfc, incremental_prop)
