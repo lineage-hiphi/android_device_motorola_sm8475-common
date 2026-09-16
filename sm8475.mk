@@ -122,10 +122,8 @@ PRODUCT_PACKAGES += \
     batching.conf \
     gnss_antenna_info.conf \
     gps.conf \
-    izat.conf \
-    lowi.conf \
-    sap.conf
-
+    izat.conf 
+    
 # Health
 PRODUCT_PACKAGES += \
     android.hardware.health-service.qti \
@@ -148,9 +146,8 @@ PRODUCT_PACKAGES += \
     init.qcom.class_core.sh \
     init.qcom.early_boot.sh \
     init.qcom.post_boot.sh \
-    init.qcom.sh \
-    init.qti.write.sh
-
+    init.qcom.sh 
+    
 # IPACM
 PRODUCT_PACKAGES += \
     ipacm \
@@ -196,7 +193,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     FrameworksResCommon \
     LineageSdkCommon \
-    SettingsProviderResCommon \
     SystemUIResCommon \
     TelephonyResCommon \
     WifiResCommon \
@@ -268,9 +264,9 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.sensor.stepdetector.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/sku_taro/android.hardware.sensor.stepdetector.xml \
     frameworks/native/data/etc/handheld_core_hardware.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/handheld_core_hardware.xml
 
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/permissions/android.hardware.hardware_keystore_v100.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/sku_cape/android.hardware.hardware_keystore.xml \
-    $(LOCAL_PATH)/configs/permissions/android.hardware.hardware_keystore_v100.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/sku_taro/android.hardware.hardware_keystore.xml \
+#PRODUCT_COPY_FILES += \
+#    $(LOCAL_PATH)/configs/permissions/android.hardware.hardware_keystore_v100.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/sku_cape/android.hardware.hardware_keystore.xml \
+#    $(LOCAL_PATH)/configs/permissions/android.hardware.hardware_keystore_v100.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/sku_taro/android.hardware.hardware_keystore.xml \
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/permissions/product_privapp-permissions-hotword.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/permissions/privapp-permissions-hotword.xml
