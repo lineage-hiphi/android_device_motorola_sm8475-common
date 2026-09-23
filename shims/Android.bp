@@ -1,0 +1,10 @@
+cc_library_shared {
+    name: "libwfdservice_motorola_shim",
+    srcs: ["libwfdservice_shim.cpp"],
+    shared_libs: [
+        "libaudioclient",
+        "libutils",
+        "liblog",
+    ],
+    system_ext_specific: true,
+}
