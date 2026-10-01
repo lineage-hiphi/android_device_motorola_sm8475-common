@@ -25,17 +25,11 @@ value:2908
 [AID_VENDOR_QTR]
 value:2909
 
-[AID_VENDOR_NXP_STRONGBOX]
-value:2910
-
 [AID_VENDOR_NXP_WEAVER]
 value:2911
 
 [AID_VENDOR_SSGTZD]
 value:2912
-
-[AID_VENDOR_THALES_STRONGBOX]
-value:2913
 
 [AID_VENDOR_QCC]
 value:2914
@@ -73,12 +67,6 @@ value:5120
 [AID_VENDOR_PROD_PERSIST]
 value:5121
 
-[vendor/bin/hw/android.hardware.security.keymint-service.strongbox-nxp]
-mode: 0755
-user: AID_VENDOR_NXP_STRONGBOX
-group: AID_SYSTEM
-caps: SYS_ADMIN SYS_NICE WAKE_ALARM
-
 [vendor/bin/hw/android.hardware.weaver-service.nxp]
 mode: 0755
 user: AID_VENDOR_NXP_WEAVER
@@ -90,12 +78,6 @@ mode: 0755
 user: AID_VENDOR_NXP_AUTHSECRET
 group: AID_SYSTEM
 caps: SYS_ADMIN SYS_NICE WAKE_ALARM
-
-[vendor/bin/hw/android.hardware.security.keymint-service.strongbox-thales]
-mode: 0755
-user: AID_VENDOR_THALES_STRONGBOX
-group: AID_SYSTEM
-caps: SYS_ADMIN SYS_NICE
 
 [vendor/bin/hw/android.hardware.weaver-service.thales]
 mode: 0755
