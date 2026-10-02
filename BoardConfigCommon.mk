@@ -61,6 +61,7 @@ TARGET_NO_BOOTLOADER := true
 BOARD_INCLUDE_DTB_IN_BOOTIMG := true
 BOARD_USES_QCOM_MERGE_DTBS_SCRIPT := true
 TARGET_NEEDS_DTBOIMAGE := true
+TARGET_MERGE_DTBS_WILDCARD ?= waipio*base
 
 # Filesystem
 TARGET_FS_CONFIG_GEN := $(COMMON_PATH)/config.fs
@@ -89,7 +90,9 @@ TARGET_KERNEL_SOURCE := kernel/motorola/sm8475
 TARGET_KERNEL_CONFIG := \
     gki_defconfig \
     vendor/waipio_GKI.config \
-    vendor/ext_config/moto-waipio.config
+    vendor/ext_config/moto-waipio.config \
+    vendor/ext_config/moto-waipio-gki.config 
+
 
 TARGET_KERNEL_EXT_MODULE_ROOT := kernel/motorola/sm8475-modules
 
